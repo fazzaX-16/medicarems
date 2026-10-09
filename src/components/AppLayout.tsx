@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   HeartPulse,
+  Wrench,
 } from "lucide-react";
 
 const NAV = [
@@ -19,6 +20,7 @@ const NAV = [
   { to: "/appointments", label: "Appointments", icon: CalendarDays },
   { to: "/pharmacy", label: "Pharmacy", icon: Pill },
   { to: "/billing", label: "Billing", icon: Receipt },
+  { to: "/equipment", label: "Equipment Management", icon: Wrench },
 ] as const;
 
 export function AppLayout({ children }: { children: ReactNode }) {
