@@ -53,3 +53,48 @@ export function calcBill(items: { quantity: number; price: number }[]) {
   const tax = Math.round(subtotal * TAX_RATE * 100) / 100;
   return { subtotal, tax, total: subtotal + tax };
 }
+
+// ---------- Equipment ----------
+export const EQUIPMENT_CATEGORIES = ["Monitoring", "Diagnostic", "Respiratory", "Mobility", "Furniture", "Emergency", "Therapy", "Other"] as const;
+export const EQUIPMENT_CONDITIONS = ["Excellent", "Good", "Fair", "Poor"] as const;
+export const EQUIPMENT_STATUSES = ["Operational", "Under Maintenance", "Out of Service", "Retired"] as const;
+export const DUE_SOON_DAYS = 30; // "due soon" window
+
+const optDate = z.string().optional().transform((v) => (v ? v : null));
+
+export const equipmentSchema = z.object({
+  name: z.string().trim().min(2, "Equipment name is required").max(100),
+  asset_id: z.string().trim().min(1, "Asset ID is required").max(30, "Asset ID is too long"),
+  category: z.enum(EQUIPMENT_CATEGORIES, { errorMap: () => ({ message: "Please select a category" }) }),
+  quantity: num("Quantity").pipe(z.number().int("Whole numbers only").min(1, "Quantity must be at least 1")),
+  purchase_date: z.string().min(1, "Please choose a purchase date"),
+  warranty_expiry: optDate,
+  last_maintenance: optDate,
+  next_maintenance: optDate,
+  renewal_due: optDate,
+  renewal_cost: num("Renewal cost").pipe(z.number().min(0, "Cost cannot be negative").max(100000000, "Cost is too large")),
+  condition: z.enum(EQUIPMENT_CONDITIONS, { errorMap: () => ({ message: "Please select a condition" }) }),
+  status: z.enum(EQUIPMENT_STATUSES, { errorMap: () => ({ message: "Please select a status" }) }),
+});
+
+/** Days from today until a date (negative = overdue). null if no date. */
+export function daysUntil(date: string | null | undefined, today = new Date()) {
+  if (!date) return null;
+  const t = new Date(today.toISOString().slice(0, 10)).getTime();
+  return Math.round((new Date(date).getTime() - t) / 86400000);
+}
+
+export function dueState(date: string | null | undefined, today = new Date()): "overdue" | "soon" | "ok" | "none" {
+  const d = daysUntil(date, today);
+  if (d === null) return "none";
+  if (d < 0) return "overdue";
+  if (d <= DUE_SOON_DAYS) return "soon";
+  return "ok";
+}
+
+/** Renewal budget = sum of renewal costs for items whose renewal is overdue or due within the window */
+export function renewalBudget(items: { renewal_due: string | null; renewal_cost: number }[], today = new Date()) {
+  return items
+    .filter((i) => ["overdue", "soon"].includes(dueState(i.renewal_due, today)))
+    .reduce((s, i) => s + Number(i.renewal_cost), 0);
+}

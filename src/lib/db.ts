@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 // Simple data hooks: each one loads a table from the Lovable Cloud database.
-export type TableName = "patients" | "doctors" | "appointments" | "medicines" | "bills";
+export type TableName = "patients" | "doctors" | "appointments" | "medicines" | "bills" | "equipment";
 
 export function useTable<T = any>(table: TableName, select = "*") {
   return useQuery({

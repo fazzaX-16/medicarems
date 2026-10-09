@@ -130,6 +130,57 @@ export type Database = {
         }
         Relationships: []
       }
+      equipment: {
+        Row: {
+          asset_id: string
+          category: string
+          condition: string
+          created_at: string
+          id: string
+          last_maintenance: string | null
+          name: string
+          next_maintenance: string | null
+          purchase_date: string
+          quantity: number
+          renewal_cost: number
+          renewal_due: string | null
+          status: string
+          warranty_expiry: string | null
+        }
+        Insert: {
+          asset_id: string
+          category: string
+          condition?: string
+          created_at?: string
+          id?: string
+          last_maintenance?: string | null
+          name: string
+          next_maintenance?: string | null
+          purchase_date: string
+          quantity?: number
+          renewal_cost?: number
+          renewal_due?: string | null
+          status?: string
+          warranty_expiry?: string | null
+        }
+        Update: {
+          asset_id?: string
+          category?: string
+          condition?: string
+          created_at?: string
+          id?: string
+          last_maintenance?: string | null
+          name?: string
+          next_maintenance?: string | null
+          purchase_date?: string
+          quantity?: number
+          renewal_cost?: number
+          renewal_due?: string | null
+          status?: string
+          warranty_expiry?: string | null
+        }
+        Relationships: []
+      }
       medicines: {
         Row: {
           created_at: string
