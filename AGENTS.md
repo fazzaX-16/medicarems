@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Data access uses the browser Cloud client via `useTable` in src/lib/db.ts with open demo RLS policies — no login, kept beginner-simple for a college demo.
+- Form validation rules and bill math live in src/lib/schemas.ts so they are shared and unit-tested.
