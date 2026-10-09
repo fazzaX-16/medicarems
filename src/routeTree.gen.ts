@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppointmentsRouteImport } from './routes/appointments'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as DoctorsRouteImport } from './routes/doctors'
+import { Route as EquipmentRouteImport } from './routes/equipment'
 import { Route as PatientsRouteImport } from './routes/patients'
 import { Route as PharmacyRouteImport } from './routes/pharmacy'
 
@@ -36,6 +37,11 @@ const DoctorsRoute = DoctorsRouteImport.update({
   path: '/doctors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipmentRoute = EquipmentRouteImport.update({
+  id: '/equipment',
+  path: '/equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PatientsRoute = PatientsRouteImport.update({
   id: '/patients',
   path: '/patients',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/appointments': typeof AppointmentsRoute
   '/billing': typeof BillingRoute
   '/doctors': typeof DoctorsRoute
+  '/equipment': typeof EquipmentRoute
   '/patients': typeof PatientsRoute
   '/pharmacy': typeof PharmacyRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/appointments': typeof AppointmentsRoute
   '/billing': typeof BillingRoute
   '/doctors': typeof DoctorsRoute
+  '/equipment': typeof EquipmentRoute
   '/patients': typeof PatientsRoute
   '/pharmacy': typeof PharmacyRoute
 }
@@ -69,22 +77,36 @@ export interface FileRoutesById {
   '/appointments': typeof AppointmentsRoute
   '/billing': typeof BillingRoute
   '/doctors': typeof DoctorsRoute
+  '/equipment': typeof EquipmentRoute
   '/patients': typeof PatientsRoute
   '/pharmacy': typeof PharmacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/appointments' | '/billing' | '/doctors' | '/patients' | '/pharmacy'
+    | '/'
+    | '/appointments'
+    | '/billing'
+    | '/doctors'
+    | '/equipment'
+    | '/patients'
+    | '/pharmacy'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/appointments' | '/billing' | '/doctors' | '/patients' | '/pharmacy'
+    | '/'
+    | '/appointments'
+    | '/billing'
+    | '/doctors'
+    | '/equipment'
+    | '/patients'
+    | '/pharmacy'
   id:
     | '__root__'
     | '/'
     | '/appointments'
     | '/billing'
     | '/doctors'
+    | '/equipment'
     | '/patients'
     | '/pharmacy'
   fileRoutesById: FileRoutesById
@@ -94,6 +116,7 @@ export interface RootRouteChildren {
   AppointmentsRoute: typeof AppointmentsRoute
   BillingRoute: typeof BillingRoute
   DoctorsRoute: typeof DoctorsRoute
+  EquipmentRoute: typeof EquipmentRoute
   PatientsRoute: typeof PatientsRoute
   PharmacyRoute: typeof PharmacyRoute
 }
@@ -128,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DoctorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipment': {
+      id: '/equipment'
+      path: '/equipment'
+      fullPath: '/equipment'
+      preLoaderRoute: typeof EquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/patients': {
       id: '/patients'
       path: '/patients'
@@ -150,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppointmentsRoute: AppointmentsRoute,
   BillingRoute: BillingRoute,
   DoctorsRoute: DoctorsRoute,
+  EquipmentRoute: EquipmentRoute,
   PatientsRoute: PatientsRoute,
   PharmacyRoute: PharmacyRoute,
 }
