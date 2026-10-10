@@ -106,13 +106,13 @@ function AuthPage() {
             <p className="text-sm text-muted-foreground">{mode === "forgot" ? "We'll email you a reset link." : "Use your hospital staff email."}</p>
           </div>
 
-          {errors.form && <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{errors.form}</p>}
+          {errors["form"] && <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{errors["form"]}</p>}
           {info && <p className="rounded-md bg-success/10 px-3 py-2 text-sm text-success">{info}</p>}
 
           <div className="space-y-1.5">
             <label htmlFor="email" className="text-sm font-medium">Email</label>
             <Input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@hospital.com" />
-            {errors.email && <p className="text-xs font-medium text-destructive">{errors.email}</p>}
+            {errors["email"] && <p className="text-xs font-medium text-destructive">{errors["email"]}</p>}
           </div>
 
           {mode !== "forgot" && (
@@ -124,7 +124,7 @@ function AuthPage() {
                   {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs font-medium text-destructive">{errors.password}</p>}
+              {errors["password"] && <p className="text-xs font-medium text-destructive">{errors["password"]}</p>}
             </div>
           )}
 
