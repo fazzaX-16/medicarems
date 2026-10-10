@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/patients")({
+export const Route = createFileRoute("/_authenticated/patients")({
   head: () => ({
     meta: [
       { title: "Patients — MediCare HMS" },

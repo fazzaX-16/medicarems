@@ -8,7 +8,7 @@ import { PageHeader, Field, Panel, TableWrap, th, td, selectClass, inr } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export const Route = createFileRoute("/billing")({
+export const Route = createFileRoute("/_authenticated/billing")({
   head: () => ({
     meta: [
       { title: "Billing — MediCare HMS" },

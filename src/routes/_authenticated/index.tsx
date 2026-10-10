@@ -3,7 +3,7 @@ import { Users, Stethoscope, CalendarDays, IndianRupee, AlertTriangle } from "lu
 import { useTable } from "@/lib/db";
 import { PageHeader, Panel, inr, StatusBadge } from "@/components/AppLayout";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Dashboard — MediCare HMS" },
