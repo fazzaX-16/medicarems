@@ -9,6 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
@@ -17,53 +20,71 @@ import { Route as AuthenticatedEquipmentRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPatientsRouteImport } from './routes/_authenticated/patients'
 import { Route as AuthenticatedPharmacyRouteImport } from './routes/_authenticated/pharmacy'
 
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAppointmentsRoute =
   AuthenticatedAppointmentsRouteImport.update({
-    id: '/_authenticated/appointments',
+    id: '/appointments',
     path: '/appointments',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
-  id: '/_authenticated/billing',
+  id: '/billing',
   path: '/billing',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDoctorsRoute = AuthenticatedDoctorsRouteImport.update({
-  id: '/_authenticated/doctors',
+  id: '/doctors',
   path: '/doctors',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedEquipmentRoute = AuthenticatedEquipmentRouteImport.update({
-  id: '/_authenticated/equipment',
+  id: '/equipment',
   path: '/equipment',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPatientsRoute = AuthenticatedPatientsRouteImport.update({
-  id: '/_authenticated/patients',
+  id: '/patients',
   path: '/patients',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPharmacyRoute = AuthenticatedPharmacyRouteImport.update({
-  id: '/_authenticated/pharmacy',
+  id: '/pharmacy',
   path: '/pharmacy',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/billing': typeof AuthenticatedBillingRoute
   '/doctors': typeof AuthenticatedDoctorsRoute
   '/equipment': typeof AuthenticatedEquipmentRoute
   '/patients': typeof AuthenticatedPatientsRoute
   '/pharmacy': typeof AuthenticatedPharmacyRoute
-  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/billing': typeof AuthenticatedBillingRoute
   '/doctors': typeof AuthenticatedDoctorsRoute
@@ -74,6 +95,9 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/doctors': typeof AuthenticatedDoctorsRoute
@@ -85,15 +109,19 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
     | '/appointments'
     | '/billing'
     | '/doctors'
     | '/equipment'
     | '/patients'
     | '/pharmacy'
-    | '/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth'
+    | '/reset-password'
     | '/appointments'
     | '/billing'
     | '/doctors'
@@ -103,6 +131,9 @@ export interface FileRouteTypes {
     | '/'
   id:
     | '__root__'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
     | '/_authenticated/appointments'
     | '/_authenticated/billing'
     | '/_authenticated/doctors'
@@ -113,6 +144,87 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/appointments': {
+      id: '/_authenticated/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AuthenticatedAppointmentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/doctors': {
+      id: '/_authenticated/doctors'
+      path: '/doctors'
+      fullPath: '/doctors'
+      preLoaderRoute: typeof AuthenticatedDoctorsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/equipment': {
+      id: '/_authenticated/equipment'
+      path: '/equipment'
+      fullPath: '/equipment'
+      preLoaderRoute: typeof AuthenticatedEquipmentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/patients': {
+      id: '/_authenticated/patients'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof AuthenticatedPatientsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pharmacy': {
+      id: '/_authenticated/pharmacy'
+      path: '/pharmacy'
+      fullPath: '/pharmacy'
+      preLoaderRoute: typeof AuthenticatedPharmacyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDoctorsRoute: typeof AuthenticatedDoctorsRoute
@@ -122,61 +234,7 @@ export interface RootRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/appointments': {
-      id: '/_authenticated/appointments'
-      path: '/appointments'
-      fullPath: '/appointments'
-      preLoaderRoute: typeof AuthenticatedAppointmentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/billing': {
-      id: '/_authenticated/billing'
-      path: '/billing'
-      fullPath: '/billing'
-      preLoaderRoute: typeof AuthenticatedBillingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/doctors': {
-      id: '/_authenticated/doctors'
-      path: '/doctors'
-      fullPath: '/doctors'
-      preLoaderRoute: typeof AuthenticatedDoctorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/equipment': {
-      id: '/_authenticated/equipment'
-      path: '/equipment'
-      fullPath: '/equipment'
-      preLoaderRoute: typeof AuthenticatedEquipmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/patients': {
-      id: '/_authenticated/patients'
-      path: '/patients'
-      fullPath: '/patients'
-      preLoaderRoute: typeof AuthenticatedPatientsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/pharmacy': {
-      id: '/_authenticated/pharmacy'
-      path: '/pharmacy'
-      fullPath: '/pharmacy'
-      preLoaderRoute: typeof AuthenticatedPharmacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
-}
-
-const rootRouteChildren: RootRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDoctorsRoute: AuthenticatedDoctorsRoute,
@@ -184,6 +242,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedPatientsRoute: AuthenticatedPatientsRoute,
   AuthenticatedPharmacyRoute: AuthenticatedPharmacyRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
