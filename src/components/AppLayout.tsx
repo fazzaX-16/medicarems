@@ -1,4 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useState, type ReactNode } from "react";
 import {
   LayoutDashboard,
@@ -11,6 +13,7 @@ import {
   X,
   HeartPulse,
   Wrench,
+  LogOut,
 } from "lucide-react";
 
 const NAV = [
@@ -25,6 +28,14 @@ const NAV = [
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  async function signOut() {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", search: { redirect: undefined }, replace: true });
+  }
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile top bar */}
@@ -68,7 +79,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </nav>
-        <p className="absolute bottom-4 left-5 text-xs opacity-60">BSc CS Mini-Project · Demo data</p>
+        <div className="absolute inset-x-3 bottom-4 space-y-3">
+          <button onClick={signOut} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-sidebar-accent">
+            <LogOut className="h-5 w-5" /> Sign out
+          </button>
+          <p className="px-2 text-xs opacity-60">BSc CS Mini-Project · Demo data</p>
+        </div>
       </aside>
 
       <main className="lg:pl-64">

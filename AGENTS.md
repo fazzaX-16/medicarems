@@ -11,3 +11,4 @@
 
 - Data access uses the browser Cloud client via `useTable` in src/lib/db.ts with open demo RLS policies — no login, kept beginner-simple for a college demo.
 - Form validation rules and bill math live in src/lib/schemas.ts so they are shared and unit-tested.
+- All hospital pages live under the _authenticated layout and every table allows only the authenticated role; why: real access control enforced by the database, not just the UI.
