@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { setRememberMe } from "@/lib/remember";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s.redirect === "string" ? s.redirect : undefined }),
+  validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined }),
   head: () => ({
     meta: [
       { title: "Staff Login — MediCare HMS" },
